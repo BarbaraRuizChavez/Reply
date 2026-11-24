@@ -2,6 +2,7 @@ package com.example.reply
 
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.example.reply.test.onNodeWithTagForStringId
 import com.example.reply.ui.ReplyApp
@@ -14,6 +15,7 @@ class ReplyAppTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
+    @TestCompactWidth
     fun compactDevice_verifyUsingBottomNavigation() {
         composeTestRule.setContent {
             ReplyTheme {
@@ -22,5 +24,32 @@ class ReplyAppTest {
         }
 
         composeTestRule.onNodeWithTagForStringId(R.string.navigation_bottom)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    @TestMediumWidth
+    fun mediumDevice_verifyUsingNavigationRail() {
+        composeTestRule.setContent {
+            ReplyTheme {
+                ReplyApp(windowSize = WindowWidthSizeClass.Medium)
+            }
+        }
+
+        composeTestRule.onNodeWithTagForStringId(R.string.navigation_rail)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    @TestExpandedWidth
+    fun expandedDevice_verifyUsingNavigationDrawer() {
+        composeTestRule.setContent {
+            ReplyTheme {
+                ReplyApp(windowSize = WindowWidthSizeClass.Expanded)
+            }
+        }
+
+        composeTestRule.onNodeWithTagForStringId(R.string.navigation_drawer)
+            .assertIsDisplayed()
     }
 }
